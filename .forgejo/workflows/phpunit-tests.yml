@@ -94,13 +94,10 @@ jobs:
           git --version
           php --version
           composer --version
-          echo $DOCKER_HOST
-          docker info
-
+          printenv | grep DOCKER_HOST
 
       - name: Running PHPUnit Tests
         run: |
           php --version
-          npm run build
           npm run test:unit:php
         if: ${{ success() || failure() }}
