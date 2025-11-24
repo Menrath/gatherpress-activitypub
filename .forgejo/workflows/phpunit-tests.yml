@@ -20,4 +20,4 @@ jobs:
         php_versions: [ '8.4' ]
     steps:
       - name: Test
-        run: 'printenv | grep DOCKER_HOST'
+        run: printenv
