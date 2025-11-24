@@ -21,5 +21,3 @@ jobs:
     steps:
       - name: Test
         run: docker info
-        env:
-          DOCKER_HOST: tcp://docker-in-docker:2375
