@@ -94,6 +94,9 @@ jobs:
           git --version
           php --version
           composer --version
+          printenv | grep DOCKER_HOST
+          docker info
+
 
       - name: Running PHPUnit Tests
         run: |
