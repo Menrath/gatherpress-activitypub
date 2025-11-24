@@ -94,7 +94,7 @@ jobs:
           git --version
           php --version
           composer --version
-          printenv | grep DOCKER_HOST
+          echo $DOCKER_HOST
           docker info
 
 
