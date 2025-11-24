@@ -13,11 +13,11 @@ on:
     - 'composer.*'
 jobs:
   test-php:
-    name: ${{ matrix.php_versions }} on ${{ matrix.os }}
+    name: PHP ${{ matrix.php_versions }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, codeberg-medium ]
+        os: [ ubuntu-latest ]
         php_versions: [ '8.1', '8.4' ]
     steps:
       - name: Checkout

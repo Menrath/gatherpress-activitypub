@@ -8,13 +8,13 @@
 		"gatherpress",
 		"activitypub"
 	],
-	"homepage": "https://codeberg.org/linos/gatherpress-activitypub#readme",
+	"homepage": "https://codeberg.org/Event-Federation/gatherpress-activitypub#readme",
 	"repository": {
 		"type": "git",
-		"url": "git+https://codeberg.org/linos/gatherpress-activitypub.git"
+		"url": "git+https://codeberg.org/Event-Federation/gatherpress-activitypub.git"
 	},
 	"bugs": {
-		"url": "https://codeberg.org/linos/gatherpress-activitypub/issues"
+		"url": "https://codeberg.org/Event-Federation/gatherpress-activitypub/issues"
 	},
 	"devDependencies": {
 		"@wordpress/i18n": "^5.4.0",
