@@ -1,0 +1,46 @@
+{
+	"name": "gatherpress-activitypub",
+	"version": "1.0.0",
+	"description": "ActivityPub for GatherPress",
+	"author": "André Menrath",
+	"license": "AGPL-3.0-only",
+	"keywords": [
+		"gatherpress",
+		"activitypub"
+	],
+	"homepage": "https://codeberg.org/linos/gatherpress-activitypub#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://codeberg.org/linos/gatherpress-activitypub.git"
+	},
+	"bugs": {
+		"url": "https://codeberg.org/linos/gatherpress-activitypub/issues"
+	},
+	"devDependencies": {
+		"@wordpress/i18n": "^5.4.0",
+		"@wordpress/scripts": "^28.4.0",
+		"@wordpress/env": "^10.35.0"
+	},
+	"scripts": {
+		"build": "wp-scripts build",
+		"check-engines": "wp-scripts check-engines",
+		"check-licenses": "wp-scripts check-licenses",
+		"format": "wp-scripts format",
+		"i18n:pot": " wp i18n make-pot . --exclude=node_modules,vendor",
+		"i18n:json": "wp i18n make-json languages --no-purge",
+		"i18n:php": "wp i18n make-php languages",
+		"lint:css": "wp-scripts lint-style",
+		"lint:css:fix": "wp-scripts lint-style --fix",
+		"lint:js": "wp-scripts lint-js",
+		"lint:js:fix": "wp-scripts lint-js --fix",
+		"lint:md:docs": "wp-scripts lint-md-docs",
+		"lint:md:js": "wp-scripts lint-md-js",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start",
+		"pretest:unit:php": "wp-env start --xdebug",
+		"test:unit:php": "wp-env run tests-wordpress php -dxdebug.mode=coverage /var/www/html/wp-content/plugins/gatherpress-activitypub/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/gatherpress-activitypub/phpunit.xml.dist --coverage-clover=coverage.xml --coverage-html=build/coverage-report",
+		"wp-env": "wp-env"
+	}
+}

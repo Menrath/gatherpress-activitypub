@@ -1,0 +1,47 @@
+{
+	"name": "gatherpress-activitypub/gatherpress-activitypub",
+	"description": "Melting the power of GatherPress and ActivityPub",
+	"type": "project",
+	"license": "A",
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "git@github.com:penske-media-corp/pmc-unit-test.git"
+		},
+		{
+			"type": "vcs",
+			"url": "git@github.com:akirk/extract-wp-hooks.git"
+		}
+	],
+	"require": {
+		"pmc/unit-test": "dev-main",
+		"php": ">=8.1"
+	},
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "*",
+		"wp-coding-standards/wpcs": "*",
+		"phpcompatibility/phpcompatibility-wp": "*",
+		"phpunit/phpunit": "^9.0",
+		"doctrine/instantiator": "^1.5",
+		"yoast/phpunit-polyfills": "*",
+		"szepeviktor/phpstan-wordpress": "^1.3",
+		"akirk/extract-wp-hooks": "dev-main"
+	},
+	"suggest": {
+		"wp-cli/wp-cli-bundle": "Combines the most common WP-CLI commands, including the wp-cli/i18n-command which should be used to create translation-files."
+	},
+	"scripts": {
+		"compat": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcompat.xml.dist --report=summary,source",
+		"format": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf --report=summary,source",
+		"lint": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --report=summary,source",
+		"lint:errors": "@lint -n",
+		"test": "@php ./vendor/phpunit/phpunit/phpunit",
+		"test:phpstan": "@php ./vendor/bin/phpstan analyze -vv --memory-limit=2G",
+		"hooks": "@php ./vendor/bin/extract-wp-hooks.php"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
+}
