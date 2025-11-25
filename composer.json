@@ -7,10 +7,6 @@
 		{
 			"type": "vcs",
 			"url": "git@github.com:penske-media-corp/pmc-unit-test.git"
-		},
-		{
-			"type": "vcs",
-			"url": "git@github.com:akirk/extract-wp-hooks.git"
 		}
 	],
 	"require": {
