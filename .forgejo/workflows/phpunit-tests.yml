@@ -22,6 +22,6 @@ jobs:
       - name: Test hosts file
         run: cat /etc/hosts
       - name: Test reach dind
-        run: curl http://dind_container:2375/info 
+        run: echo test && echo $DOCKER_HOST
       - name: Test docker info
         run: docker info
