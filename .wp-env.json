@@ -3,7 +3,7 @@
 	"plugins": [
 		"./gatherpress",
 		"./activitypub",
-		"./gatherpress-activitypub"
+		"."
 	],
 	"themes": [
 		"WordPress/twentytwentyfive"
@@ -11,8 +11,5 @@
 	"config": {
 		"WP_DEBUG": true,
 		"WP_DEBUG_LOG": true
-	},
-	"mappings": {
-        "wp-content/plugins": "."
-    }
+	}
 }
