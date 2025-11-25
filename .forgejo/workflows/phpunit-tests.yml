@@ -61,7 +61,7 @@ jobs:
           path: |
             ./../gatherpress/
             ./../activitypub/
-          key: cache-dependend-plugins-${{ matrix.activitypub-plugin-version }}"-${{ matrix.gatherpress-plugin-version }}"
+          key: cache-dependend-plugins-${{ matrix.activitypub-plugin-version }}-${{ matrix.gatherpress-plugin-version }}
 
       - name: Setup PHP
         uses: https://github.com/shivammathur/setup-php@v2
@@ -102,9 +102,9 @@ jobs:
         if: steps.cache-dependend-plugins.cache-hit != 'true'
         run: |
           git clone https://github.com/Automattic/wordpress-activitypub ./ci/activitypub
-          git checkout -C ./ci/activitypub tags/${{ matrix.activitypub-plugin-version }}"
+          git -C checkout ./ci/activitypub tags/${{ matrix.activitypub-plugin-version }}"
           git clone https://github.com/GatherPress/gatherpress ./ci/gatherpress
-          git checkout -C ./ci/gatherpress checkout tags/${{ matrix.gatherpress-plugin-version }}"
+          git -C ./ci/gatherpress checkout tags/${{ matrix.gatherpress-plugin-version }}"
 
       - name: Log debug information
         run: |
