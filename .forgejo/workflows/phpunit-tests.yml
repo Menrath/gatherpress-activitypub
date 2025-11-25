@@ -61,7 +61,7 @@ jobs:
       - name: Running PHPUnit Tests
         run: |
           export WP_CLI_ALLOW_ROOT=1
-          npm run test:unit:php
+          wp-env start
         env:
           WP_CLI_ALLOW_ROOT: 1
         if: ${{ success() || failure() }}
