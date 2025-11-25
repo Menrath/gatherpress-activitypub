@@ -101,10 +101,10 @@ jobs:
       - name: Clone WordPress ActivityPub and GatehrPress plugin
         if: steps.cache-dependend-plugins.cache-hit != 'true'
         run: |
-          git clone https://github.com/Automattic/wordpress-activitypub ./../activitypub
-          git checkout -C ./../activitypub tags/${{ matrix.activitypub-plugin-version }}"
-          git clone https://github.com/GatherPress/gatherpress ./../gatherpress
-          git checkout -C ./../gatherpress checkout tags/${{ matrix.gatherpress-plugin-version }}"
+          git clone https://github.com/Automattic/wordpress-activitypub ./ci/activitypub
+          git checkout -C ./ci/activitypub tags/${{ matrix.activitypub-plugin-version }}"
+          git clone https://github.com/GatherPress/gatherpress ./ci/gatherpress
+          git checkout -C ./ci/gatherpress checkout tags/${{ matrix.gatherpress-plugin-version }}"
 
       - name: Log debug information
         run: |
@@ -118,5 +118,6 @@ jobs:
       - name: Running PHPUnit Tests
         run: |
           php --version
+          sed -i 's#\./\.\./#./ci/#g' wp-env.json
           npm run test:unit:php
         if: ${{ success() || failure() }}
