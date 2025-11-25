@@ -60,3 +60,4 @@ test-report.xml
 
 # Dev tools
 .vscode/launch.json
+.wp-env.override.json
