@@ -15,16 +15,17 @@ tests_add_filter(
 	'plugins_loaded',
 	static function () {
 		// Manually load our plugin without having to setup the development folder in the correct plugin folder.
-		require_once __DIR__ . '/../../../../gatherpress/gatherpress.php';
-        require_once __DIR__ . '/../../../../activitypub/activitypub.php';
-        require_once __DIR__ . '/../../../gatherpress-activitypub.php';
+		require_once ABSPATH . '/wp-content/plugins/gatherpress/gatherpress.php';
+		require_once ABSPATH . '/wp-content/plugins/activitypub/activitypub.php';
+		// Manually load our plugin without having to setup the development folder in the correct plugin folder.
+		require_once __DIR__ . '/../../../gatherpress-activitypub.php';
 	}
 );
 
 tests_add_filter(
 	'gatherpress_autoloader',
 	static function ( array $namespaces ): array {
-		$namespaces['GatherPress\Tests'] = GATHERPRESS_CORE_PATH . '/test/unit/php/';
+		$namespaces['GatherPress\Tests']             = GATHERPRESS_CORE_PATH . '/test/unit/php/';
 		$namespaces['GatherPress_ActivityPub\Tests'] = __DIR__;
 
 		return $namespaces;

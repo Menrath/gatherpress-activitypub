@@ -1,6 +1,8 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
 	"plugins": [
+		"./mu-plugins/gatherpress",
+		"./mu-plugins/activitypub",
 		"."
 	],
 	"themes": [
@@ -9,8 +11,5 @@
 	"config": {
 		"WP_DEBUG": true,
 		"WP_DEBUG_LOG": true
-	},
-	"mappings": {
-		"wp-content/mu-plugins": "./mu-plugins"
 	}
 }
