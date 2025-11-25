@@ -21,17 +21,17 @@ jobs:
         with:
           submodules: true
 
-      - name: Setup PHP
-        uses: https://github.com/shivammathur/setup-php@v2
-        with:
-          php-version: latest
-          coverage: xdebug
+      # - name: Setup PHP
+      #   uses: https://github.com/shivammathur/setup-php@v2
+      #   with:
+      #     php-version: latest
+      #     coverage: xdebug
 
-      - name: Install Composer dependencies
-        uses: https://github.com/ramsey/composer-install@v3
-        env:
-          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
-          GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
+      # - name: Install Composer dependencies
+      #   uses: https://github.com/ramsey/composer-install@v3
+      #   env:
+      #     COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
+      #     GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
       - name: Cache NodeJS packages
         uses: https://code.forgejo.org/actions/cache@v4
@@ -68,5 +68,6 @@ jobs:
 
       - name: Running PHPUnit Tests
         run: |
+          wp-env run cli --env-cwd=wp-content/plugins/gatherpress-activitypub composer install
           npm run test:unit:php
         if: ${{ success() || failure() }}
