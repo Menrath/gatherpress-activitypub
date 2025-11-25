@@ -31,26 +31,15 @@ jobs:
         uses: https://code.forgejo.org/actions/cache@v4
         with:
           path: |
-            ./gatherpress-activitypub/vendor/
-            ./gatherpress/
+            ./vendor/
           key: cache-composer-1
 
       - name: Cache NodeJS packages
         uses: https://code.forgejo.org/actions/cache@v4
         with:
           path: |
-            ./gatherpress-activitypub/node_modules/
-            ./gatherpress/node_modules/
+            ./node_modules/
           key: cache-node-1
-
-      - name: Install composer dependencies
-        if: steps.cache-composer.outputs.cache-hit != 'true'
-        run: |
-          composer install --working-dir gatherpress --optimize-autoloader --prefer-dist
-          composer install --optimize-autoloader --prefer-dist
-        env:
-          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
-          GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
       - name: Install NodeJS
         uses: actions/setup-node@v4
@@ -70,6 +59,14 @@ jobs:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
+      - name: Install composer dependencies
+        if: steps.cache-composer.outputs.cache-hit != 'true'
+        run: |
+          wp-env run cli composer install composer install --optimize-autoloader --prefer-dist
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
+          GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
+
       - name: Log debug information
         run: |
           npm --version
@@ -77,11 +74,8 @@ jobs:
           git --version
           php --version
           composer --version
-          printenv | grep DOCKER_HOST
 
       - name: Running PHPUnit Tests
         run: |
-          echo $PWD
-          ls -l
           npm run test:unit:php
         if: ${{ success() || failure() }}
