@@ -68,6 +68,5 @@ jobs:
 
       - name: Running PHPUnit Tests
         run: |
-          rm .wp-env.override.json
           npm run test:unit:php
         if: ${{ success() || failure() }}
