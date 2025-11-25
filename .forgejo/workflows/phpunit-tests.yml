@@ -120,7 +120,7 @@ jobs:
 
       - name: Running PHPUnit Tests
         run: |
-          php --version
           sed -i 's#\./\.\./#./ci/#g' .wp-env.json
+          cat .wp-env.json
           npm run test:unit:php
         if: ${{ success() || failure() }}
