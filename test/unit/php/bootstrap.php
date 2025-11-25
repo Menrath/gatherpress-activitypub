@@ -14,7 +14,7 @@ $gatherpress_activitypub_bootstrap_instance = PMC\Unit_Test\Bootstrap::get_insta
 tests_add_filter(
 	'plugins_loaded',
 	static function () {
-		// Manually load our plugin without having to setup the development folder in the correct plugin folder.
+		// Manually load needed plugins this plugins depends on, so that we can access their classes.
 		require_once ABSPATH . '/wp-content/plugins/gatherpress/gatherpress.php';
 		require_once ABSPATH . '/wp-content/plugins/activitypub/activitypub.php';
 		// Manually load our plugin without having to setup the development folder in the correct plugin folder.
