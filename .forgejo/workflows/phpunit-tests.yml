@@ -15,24 +15,20 @@ jobs:
   test-php:
     name: PHP ${{ matrix.php-version }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-version: [ '8.3' ]
-        activitypub-plugin-version: [ 'trunk' ]
-        gatherpress-plugin-version: [ 'develop' ]
     steps:
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v6
         with:
           submodules: true
 
-      - name: Cache Composer
-        id: cache-composer-node
-        uses: https://code.forgejo.org/actions/cache@v4
+      - name: Setup PHP
+        uses: https://github.com/shivammathur/setup-php@v2
         with:
-          path: |
-            ./vendor/
-          key: cache-composer-1
+          php-version: latest
+          coverage: xdebug
+
+      - name: Install Composer dependencies
+        uses: https://github.com/ramsey/composer-install@v3"
 
       - name: Cache NodeJS packages
         uses: https://code.forgejo.org/actions/cache@v4
@@ -42,7 +38,7 @@ jobs:
           key: cache-node-1
 
       - name: Install NodeJS
-        uses: actions/setup-node@v4
+        uses: https://code.forgejo.org/actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           # Enable built-in functionality for caching and restoring dependencies, which is disabled by default.
