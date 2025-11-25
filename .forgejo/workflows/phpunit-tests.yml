@@ -19,6 +19,8 @@ jobs:
       matrix:
         php_versions: [ '8.4' ]
     steps:
+      - name: Test hosts file
+        run: cat /etc/hosts
       - name: Test reach dind
         run: curl http://dind_container:2375/info 
       - name: Test docker info
