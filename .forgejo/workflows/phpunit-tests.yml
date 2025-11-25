@@ -21,7 +21,6 @@ jobs:
     steps:
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v4
-        run: 'printenv | grep DOCKER_HOST'
 
       - name: Cache Composer
         id: cache-composer-node
