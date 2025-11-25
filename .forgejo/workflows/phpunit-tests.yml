@@ -15,8 +15,6 @@ jobs:
   test-php:
     name: PHP ${{ matrix.php-version }}
     runs-on: ubuntu-latest
-    env:
-      WP_CLI_ALLOW_ROOT: true
     steps:
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v6
@@ -62,6 +60,5 @@ jobs:
 
       - name: Running PHPUnit Tests
         run: |
-          export WP_CLI_ALLOW_ROOT=1
           wp-env start
         if: ${{ success() || failure() }}
