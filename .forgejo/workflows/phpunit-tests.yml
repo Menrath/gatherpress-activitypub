@@ -28,7 +28,7 @@ jobs:
           coverage: xdebug
 
       - name: Install Composer dependencies
-        uses: https://github.com/ramsey/composer-install@v3"
+        uses: https://github.com/ramsey/composer-install@v3
 
       - name: Cache NodeJS packages
         uses: https://code.forgejo.org/actions/cache@v4
