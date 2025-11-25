@@ -35,21 +35,6 @@ jobs:
             ./gatherpress/
           key: cache-composer-1
 
-      - name: Setup cache environment for PHP Extensions
-        id: php-extensions-cache
-        uses: https://github.com/shivammathur/cache-extensions@v1
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: dom, iconv, json, libxml, zip
-          key: php-extensions-cache-1
-
-      - name: Cache PHP extensions
-        uses: https://code.forgejo.org/actions/cache@v4
-        with:
-          path: ${{ steps.php-extensions-cache.outputs.dir }}
-          key: ${{ steps.php-extensions-cache.outputs.key }}
-          restore-keys: ${{ steps.php-extensions-cache.outputs.key }}
-
       - name: Cache NodeJS packages
         uses: https://code.forgejo.org/actions/cache@v4
         with:
@@ -107,7 +92,5 @@ jobs:
 
       - name: Running PHPUnit Tests
         run: |
-          sed -i 's#\./\.\./#./ci/#g' .wp-env.json
-          cat .wp-env.json
           npm run test:unit:php
         if: ${{ success() || failure() }}
