@@ -43,16 +43,6 @@ jobs:
             ./gatherpress/node_modules/
           key: cache-node-1
 
-      - name: Setup PHP
-        uses: https://github.com/shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: dom, iconv, json, libxml, zip
-          coverage: xdebug
-          tools: composer, cs2pr
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}
-
       - name: Install composer dependencies
         if: steps.cache-composer.outputs.cache-hit != 'true'
         run: |
