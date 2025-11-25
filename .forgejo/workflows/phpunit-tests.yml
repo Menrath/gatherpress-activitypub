@@ -76,7 +76,7 @@ jobs:
         run: |
           npm i -g @wordpress/env
           npm --prefix gatherpress install
-          npm --prefix gatherpress-activitypub install
+          npm install
         env:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
