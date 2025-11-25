@@ -60,6 +60,8 @@ jobs:
 
       - name: Running PHPUnit Tests
         run: |
+          wp-env start --xdebug
+          wp-env run cli ls -l
           wp-env run cli --env-cwd=wp-content/plugins/gatherpress-activitypub composer install
           npm run test:unit:php
         if: ${{ success() || failure() }}
