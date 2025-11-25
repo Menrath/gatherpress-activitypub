@@ -13,11 +13,13 @@ on:
     - 'composer.*'
 jobs:
   test-php:
-    name: PHP ${{ matrix.php_versions }}
+    name: PHP ${{ matrix.php-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php_version: [ '8.4' ]
+        php-version: [ '8.4' ]
+        activitypub-plugin-version: [ '7.6.1' ]
+        gatherpress-plugin-version: [ 'main' ]
     steps:
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v4
@@ -51,6 +53,15 @@ jobs:
           path: |
             ./node_modules/
           key: cache-node-1
+
+      - name: Cache ActivityPub and GatherPress plugin
+        id: cache-dependend-plugins
+        uses: https://code.forgejo.org/actions/cache@v4
+        with:
+          path: |
+            ./../gatherpress/
+            ./../activitypub/
+          key: cache-dependend-plugins-${{ matrix.activitypub-plugin-version }}"-${{ matrix.gatherpress-plugin-version }}"
 
       - name: Setup PHP
         uses: https://github.com/shivammathur/setup-php@v2
@@ -86,6 +97,14 @@ jobs:
         env:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
+
+      - name: Clone WordPress ActivityPub and GatehrPress plugin
+        if: steps.cache-dependend-plugins.cache-hit != 'true'
+        run: |
+          git clone https://github.com/Automattic/wordpress-activitypub ./../activitypub
+          git checkout -C ./../activitypub tags/${{ matrix.activitypub-plugin-version }}"
+          git clone https://github.com/GatherPress/gatherpress ./../gatherpress
+          git checkout -C ./../gatherpress checkout tags/${{ matrix.gatherpress-plugin-version }}"
 
       - name: Log debug information
         run: |
