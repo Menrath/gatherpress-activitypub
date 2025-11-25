@@ -54,15 +54,6 @@ jobs:
             ./node_modules/
           key: cache-node-1
 
-      - name: Cache ActivityPub and GatherPress plugin
-        id: cache-dependend-plugins
-        uses: https://code.forgejo.org/actions/cache@v4
-        with:
-          path: |
-            ./../gatherpress/
-            ./../activitypub/
-          key: cache-dependend-plugins-${{ matrix.activitypub-plugin-version }}-${{ matrix.gatherpress-plugin-version }}
-
       - name: Setup PHP
         uses: https://github.com/shivammathur/setup-php@v2
         with:

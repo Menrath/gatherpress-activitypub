@@ -1,8 +1,8 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
 	"plugins": [
-		"https://github.com/Automattic/wordpress-activitypub.git",
-		"https://github.com/GatherPress/gatherpress.git",
+		"https://github.com/Automattic/wordpress-activitypub",
+		"https://github.com/GatherPress/gatherpress",
 		"."
 	],
 	"themes": [
