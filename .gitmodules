@@ -1,6 +1,0 @@
-[submodule "mu-plugins/gatherpress"]
-	path = vendor/gatherpress/gatherpress
-	url = https://github.com/GatherPress/gatherpress
-[submodule "mu-plugins/activitypub"]
-	path = vendor/automattic/activitypub
-	url = https://github.com/Automattic/wordpress-activitypub
