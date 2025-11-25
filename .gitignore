@@ -55,3 +55,4 @@ coverage
 test-report.xml
 
 *.zip
+.vscode/launch.json
