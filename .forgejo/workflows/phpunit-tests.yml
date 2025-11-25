@@ -18,8 +18,8 @@ jobs:
     strategy:
       matrix:
         php-version: [ '8.4' ]
-        activitypub-plugin-version: [ '7.6.1' ]
-        gatherpress-plugin-version: [ 'main' ]
+        activitypub-plugin-version: [ 'trunk' ]
+        gatherpress-plugin-version: [ 'develop' ]
     steps:
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v4
@@ -102,8 +102,10 @@ jobs:
         if: steps.cache-dependend-plugins.cache-hit != 'true'
         run: |
           git clone https://github.com/Automattic/wordpress-activitypub ./ci/activitypub
+          git -C ./ci/activitypub fetch --tags
           git -C ./ci/activitypub checkout ${{ matrix.activitypub-plugin-version }}"
           git clone https://github.com/GatherPress/gatherpress ./ci/gatherpress
+          git -C ./ci/gatherpress fetch --tags
           git -C ./ci/gatherpress checkout ${{ matrix.gatherpress-plugin-version }}"
 
       - name: Log debug information
