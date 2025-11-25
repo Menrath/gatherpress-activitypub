@@ -32,12 +32,12 @@ define( 'GATHERPRESS_ACTIVITYPUB_CORE_PATH', __DIR__ );
  * @param array $namespace An associative array of namespaces and their paths.
  * @return array Modified array of namespaces and their paths.
  */
-function gatherpress_awesome_autoloader( array $namespace ): array {
+function gatherpress_activitypub_autoloader( array $namespace ): array {
 	$namespace['GatherPress_ActivityPub'] = GATHERPRESS_ACTIVITYPUB_CORE_PATH;
 
 	return $namespace;
 }
-add_filter( 'gatherpress_autoloader', 'gatherpress_awesome_autoloader' );
+add_filter( 'gatherpress_autoloader', 'gatherpress_activitypub_autoloader' );
 
 /**
  * Initializes the GatherPress ActivityPub setup.
@@ -48,10 +48,10 @@ add_filter( 'gatherpress_autoloader', 'gatherpress_awesome_autoloader' );
  *
  * @return void
  */
-function gatherpress_awesome_setup(): void {
+function gatherpress_activitypub_setup(): void {
 	if ( defined( 'GATHERPRESS_VERSION' ) ) {
 		GatherPress_ActivityPub\Setup::get_instance();
 	}
 
 }
-add_action( 'plugins_loaded', 'gatherpress_awesome_setup' );
+add_action( 'plugins_loaded', 'gatherpress_activitypub_setup' );
