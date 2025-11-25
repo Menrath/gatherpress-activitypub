@@ -29,6 +29,9 @@ jobs:
 
       - name: Install Composer dependencies
         uses: https://github.com/ramsey/composer-install@v3
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
+          GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
       - name: Cache NodeJS packages
         uses: https://code.forgejo.org/actions/cache@v4
@@ -51,14 +54,6 @@ jobs:
         run: |
           npm i -g @wordpress/env
           npm install
-        env:
-          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
-          GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
-
-      - name: Install composer dependencies
-        if: steps.cache-composer.outputs.cache-hit != 'true'
-        run: |
-          wp-env run cli composer install composer install --optimize-autoloader --prefer-dist
         env:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
