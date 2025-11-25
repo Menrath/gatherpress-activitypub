@@ -54,5 +54,9 @@ vanue-page.png
 coverage
 test-report.xml
 
+
+# Signed releases
 *.zip
+
+# Dev tools
 .vscode/launch.json

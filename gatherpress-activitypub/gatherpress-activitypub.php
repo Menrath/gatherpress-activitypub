@@ -29,13 +29,13 @@ define( 'GATHERPRESS_ACTIVITYPUB_CORE_PATH', __DIR__ );
  * This function hooks into the 'gatherpress_autoloader' filter and adds the
  * GatherPress_ActivityPub namespace to the list of namespaces with its core path.
  *
- * @param array $namespaces An associative array of namespaces and their paths.
+ * @param array $namespace An associative array of namespaces and their paths.
  * @return array Modified array of namespaces and their paths.
  */
-function gatherpress_activitypub_autoloader( array $namespaces ): array {
-	$namespaces['GatherPress_ActivityPub'] = GATHERPRESS_ACTIVITYPUB_CORE_PATH;
+function gatherpress_activitypub_autoloader( array $namespace ): array {
+	$namespace['GatherPress_ActivityPub'] = GATHERPRESS_ACTIVITYPUB_CORE_PATH;
 
-	return $namespaces;
+	return $namespace;
 }
 add_filter( 'gatherpress_autoloader', 'gatherpress_activitypub_autoloader' );
 
@@ -49,7 +49,7 @@ add_filter( 'gatherpress_autoloader', 'gatherpress_activitypub_autoloader' );
  * @return void
  */
 function gatherpress_activitypub_setup(): void {
-	if ( defined( 'GATHERPRESS_VERSION' ) ) {
+	if ( defined( 'GATHERPRESS_VERSION' && class_exists( 'GatherPress_ActivityPub\Setup' ) ) ) {
 		GatherPress_ActivityPub\Setup::get_instance();
 	}
 }

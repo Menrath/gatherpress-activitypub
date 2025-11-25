@@ -89,5 +89,4 @@ class Setup {
 		// Return the default transformer.
 		return $transformer;
 	}
-
 }

@@ -1,9 +1,9 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
 	"plugins": [
-		"https://downloads.wordpress.org/plugin/activitypub.7.6.1.zip",
-		"https://downloads.wordpress.org/plugin/gatherpress.0.32.3.zip",
-		"."
+		"./gatherpress",
+		"./activitypub",
+		"./gatherpress-activitypub"
 	],
 	"themes": [
 		"WordPress/twentytwentyfive"
@@ -11,5 +11,8 @@
 	"config": {
 		"WP_DEBUG": true,
 		"WP_DEBUG_LOG": true
-	}
+	},
+	"mappings": {
+        "wp-content/plugins": "."
+    }
 }
