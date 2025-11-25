@@ -58,14 +58,6 @@ jobs:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
-      - name: Log debug information
-        run: |
-          npm --version
-          node --version
-          git --version
-          php --version
-          composer --version
-
       - name: Running PHPUnit Tests
         run: |
           wp-env run cli --env-cwd=wp-content/plugins/gatherpress-activitypub composer install
