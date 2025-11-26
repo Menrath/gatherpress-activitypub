@@ -117,7 +117,7 @@ jobs:
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
         with:
           composer_options: --optimize-autoloader --prefer-dist
-          working-directory:
+          working-directory: ${{ env.WP_CORE_DIR }}/wp-content/plugins/gatherpress
 
       - name: Unit Testing
         run: ./vendor/bin/phpunit

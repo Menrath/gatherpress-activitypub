@@ -218,5 +218,7 @@ install_db() {
 }
 
 install_wp
+install_gatherpress_plugin
+install_activitypub_plugin
 install_test_suite
 install_db
