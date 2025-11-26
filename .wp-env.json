@@ -8,8 +8,6 @@
 		"WP_DEBUG_LOG": true
 	},
 	"mappings": {
-		"wp-content/plugins/gatherpress-activitypub": ".",
-		"wp-content/plugins/gatherpress-activitypub2": "/workspace/Event-Federation/gatherpress-activitypub",
-		"wp-content/plugins/gatherpress-activitypub3": "/data/workspace/Event-Federation/gatherpress-activitypub"
+		"wp-content/plugins/gatherpress-activitypub": "/home/runner/workspace/Event-Federation/gatherpress-activitypub"
 	}
 }
