@@ -11,12 +11,9 @@
 
 $gatherpress_activitypub_bootstrap_instance = PMC\Unit_Test\Bootstrap::get_instance();
 
-echo "----- Adding filter for loading plugins just in time -----\n";
-
 tests_add_filter(
 	'plugins_loaded',
 	static function (): void {
-		echo "----- Manually activating plugins -----\n";
 		// Manually load needed plugins this plugins depends on, so that we can access their classes.
 		require_once ABSPATH . '/wp-content/plugins/gatherpress/gatherpress.php';
 		require_once ABSPATH . '/wp-content/plugins/activitypub/activitypub.php';
@@ -25,12 +22,9 @@ tests_add_filter(
 	}
 );
 
-echo "----- Adding filter for autoloader for test classes -----\n";
-
 tests_add_filter(
 	'gatherpress_autoloader',
 	static function ( array $namespaces ): array {
-		echo "----- Adding autoloader for test classes -----\n";
 		var_dump( $namespaces );
 		$namespaces['GatherPress\Tests']             = GATHERPRESS_CORE_PATH . '/test/unit/php/';
 		$namespaces['GatherPress_ActivityPub\Tests'] = __DIR__;
