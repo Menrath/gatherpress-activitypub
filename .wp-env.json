@@ -1,5 +1,8 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
+	"plugins": [
+		"/home/runner/workspace/Event-Federation/gatherpress-activitypub"
+	],
 	"themes": [
 		"WordPress/twentytwentyfive"
 	],

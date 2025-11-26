@@ -59,10 +59,8 @@ jobs:
 
       - name: Running PHPUnit Tests
         run: |
+          cp -r /workspace ~
+          ls -l ~
           wp-env start --debug
-          echo $USER
-          echo 'ls -la /home/$USER'
-          ls -la /home/$USER
-          wp-env run cli ls -la /home/runner
 
         if: ${{ success() || failure() }}
