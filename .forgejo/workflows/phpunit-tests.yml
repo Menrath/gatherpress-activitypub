@@ -102,6 +102,9 @@ jobs:
           packages: mysql-client
           version: 1.0
 
+      - name: Debug
+        run: pwd
+
       - name: Setup Test Environment
         if: steps.cache-wordpress.outputs.cache-hit != 'true'
         run: bash bin/install-wp-tests.sh wordpress_test root root mariadb ${{ matrix.wordpress-version }} false false
