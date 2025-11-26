@@ -40,7 +40,8 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start",
 		"pretest:unit:php": "wp-env start --xdebug",
-		"test:unit:php": "wp-env run tests-wordpress php -dxdebug.mode=coverage /var/www/html/wp-content/plugins/gatherpress-activitypub/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/gatherpress-activitypub/phpunit.xml.dist --coverage-clover=coverage.xml --coverage-html=build/coverage-report",
+		"test:unit:php": "wp-env run tests-wordpress php /var/www/html/wp-content/plugins/gatherpress-activitypub/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/gatherpress-activitypub/phpunit.xml.dist",
+		"test:unit:php": "wp-env run tests-wordpress php /var/www/html/wp-content/plugins/gatherpress-activitypub/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/gatherpress-activitypub/phpunit.xml.dist",
 		"wp-env": "wp-env"
 	}
 }

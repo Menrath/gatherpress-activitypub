@@ -25,7 +25,6 @@ tests_add_filter(
 tests_add_filter(
 	'gatherpress_autoloader',
 	static function ( array $namespaces ): array {
-		$namespaces['GatherPress\Tests']             = GATHERPRESS_CORE_PATH . '/test/unit/php/';
 		$namespaces['GatherPress_ActivityPub\Tests'] = __DIR__;
 
 		return $namespaces;
