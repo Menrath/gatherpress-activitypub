@@ -57,57 +57,6 @@ jobs:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
-      - name: Detect Host Path for /workspace
-        run: |
-          # Get the container ID for the current job
-          CONTAINER_ID=$(basename $(cat /proc/1/cpuset))
-
-          # Inspect the container and find the Source for /workspace
-          HOST_WORKSPACE_PATH=$(docker inspect $CONTAINER_ID | jq -r '.[] | .Mounts[] | select(.Destination == "/workspace") | .Source')
-
-          # Validate the resulting path
-          if [[ -z "$HOST_WORKSPACE_PATH" ]]; then
-            echo "Error: Unable to detect the host path for /workspace mount." >&2
-            exit 1
-          fi
-
-          # Output the detected host directory for verification
-          echo "Detected host path for /workspace: $HOST_WORKSPACE_PATH"
-
-          # Load the host workspace path dynamically
-          PLUGIN_PATH="$HOST_WORKSPACE_PATH/Event-Federation/gatherpress-activitypub"
-
-          # Path to .wp-env.json file
-          WP_ENV_JSON="./.wp-env.json"
-
-          # Verify .wp-env.json exists
-          if [[ ! -f "$WP_ENV_JSON" ]]; then
-            echo "Error: .wp-env.json not found!" >&2
-            exit 1
-          fi
-
-          # Update the file
-          jq --arg pluginPath "$PLUGIN_PATH" '
-            .mappings["wp-content/plugins/gatherpress-activitypub"] = {
-              "type": "local",
-              "path": $pluginPath,
-              "basename": "gatherpress-activitypub"
-            }' "$WP_ENV_JSON" > "$WP_ENV_JSON.tmp" && mv "$WP_ENV_JSON.tmp" "$WP_ENV_JSON"
-
-          # Debug the updated .wp-env.json
-          echo "Updated .wp-env.json contents:"
-          cat "$WP_ENV_JSON"
-
-      - name: Start wp-env
-        run: |
-          echo "Starting WordPress environment..."
-          npx wp-env start
-
-      - name: Start WordPress Environment
-        run: |
-          echo "Starting WordPress environment with updated mappings..."
-          npx wp-env start
-
       - name: Running PHPUnit Tests
         run: |
           wp-env start --debug
@@ -116,5 +65,6 @@ jobs:
           wp-env run cli echo $PWD
           wp-env run cli ls -l ./wp-content/plugins/gatherpress-activitypub
           wp-env run cli ls -l ./wp-content/plugins/gatherpress-activitypub2
+          wp-env run cli ls -l ./wp-content/plugins/gatherpress-activitypub3
           cat /proc/mounts
         if: ${{ success() || failure() }}
