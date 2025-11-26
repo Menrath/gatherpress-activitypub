@@ -58,9 +58,7 @@ jobs:
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
       - name: Running PHPUnit Tests
-        run: |
-          cp -r /workspace ~
-          ls -l ~
-          wp-env start --debug
+        run:
+          npm run test:unit:php
 
         if: ${{ success() || failure() }}
