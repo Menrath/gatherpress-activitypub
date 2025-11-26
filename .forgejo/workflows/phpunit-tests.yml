@@ -61,7 +61,8 @@ jobs:
         run: |
           wp-env start --debug
           echo $USER
-          ls -l /home/$USER
-          wp-env run cli ls -l /home/runner
+          echo 'ls -la /home/$USER'
+          ls -la /home/$USER
+          wp-env run cli ls -la /home/runner
 
         if: ${{ success() || failure() }}
