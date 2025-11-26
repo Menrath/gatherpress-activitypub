@@ -3,7 +3,7 @@ name: PHPUnit Tests
 on:
   push:
     branches:
-      - github
+      - main
   pull_request:
     paths:
     - '.forgejo/workflows/phpunit-tests.yml'
