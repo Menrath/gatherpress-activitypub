@@ -50,6 +50,7 @@ jobs:
         run: |
           echo $USER
           echo $HOME
+          docker context inspect
           cat /proc/mounts
           docker info
           wp-env start --xdebug
