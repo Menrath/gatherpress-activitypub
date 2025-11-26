@@ -69,7 +69,7 @@ jobs:
           restore-keys: ${{ steps.php-extensions-cache.outputs.key }}
 
       - name: Setup PHP
-        uses: https://github.com/shivammathur/setup-php@v2.35.5
+        uses: https://github.com/shivammathur/setup-php@v2.35
         with:
           php-version: ${{ matrix.php-version }}
           extensions: dom, iconv, json, libxml, zip
