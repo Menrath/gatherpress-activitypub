@@ -69,10 +69,14 @@ jobs:
           restore-keys: ${{ steps.php-extensions-cache.outputs.key }}
 
       - name: Setup PHP
-        uses: https://github.com/shivammathur/setup-php@v2
+        uses: https://github.com/shivammathur/setup-php@v2.35.5
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: dom, iconv, json, libxml, zip
+          coverage: none
+          tools: composer, cs2pr
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}
-          runner: self-hosted
 
       - name: Install Composer dependencies for PHP
         if: steps.cache-composer.outputs.cache-hit != 'true'
