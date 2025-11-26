@@ -9,7 +9,7 @@
 
 namespace GatherPress_ActivityPub\Tests\Core;
 
-use GatherPress\Tests\Base;
+use GatherPress_ActivityPub\Tests\Base;
 
 /**
  * Class Test_GatherPress_ActivityPub.
