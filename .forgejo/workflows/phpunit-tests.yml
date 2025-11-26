@@ -59,6 +59,6 @@ jobs:
 
       - name: Running PHPUnit Tests
         run: |
-          chmod -R 777 .
           wp-env start
+          wp-env run cli ls -l
         if: ${{ success() || failure() }}
