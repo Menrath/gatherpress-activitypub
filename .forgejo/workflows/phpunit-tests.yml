@@ -26,7 +26,7 @@ jobs:
         image: mariadb
         env:
           MYSQL_ROOT_PASSWORD: root
-strategy:
+    strategy:
       matrix:
         php-version: ['8.4']
         wordpress-version: ['6.8']
