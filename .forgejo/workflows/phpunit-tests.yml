@@ -3,8 +3,7 @@ name: PHPUnit Tests
 on:
   push:
     branches:
-      - main
-      - ci_wp_env
+      - github
   pull_request:
     paths:
     - '.forgejo/workflows/phpunit-tests.yml'
@@ -17,26 +16,36 @@ on:
 jobs:
   test-php:
     name: PHP ${{ matrix.php-version }}
-    runs-on: docker
+    runs-on: ubuntu-latest
     steps:
-      - name: Install packages
-        run: |
-          apk add --update npm bash sudo
-
       - name: Checkout
-        uses: https://code.forgejo.org/actions/checkout@v6
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.35.5
+        with:
+          php-version: latest
+          coverage: xdebug
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          # Enable built-in functionality for caching and restoring dependencies, which is disabled by default.
+          # The actions/setup-node uses actions/cache under the hood.
+          # https://github.com/actions/setup-node#caching-global-packages-data
+          cache: 'npm'
 
       - name: Install NodeJS dependencies
         if: steps.cache-node.outputs.cache-hit != 'true'
         run: |
           npm i -g @wordpress/env
           npm install
-        env:
-          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
-          GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
       - name: Running PHPUnit Tests
         run: |
-          docker info
           npm run test:unit:php
         if: ${{ success() || failure() }}
