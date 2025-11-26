@@ -1,4 +1,5 @@
 name: PHPUnit Tests
+
 on:
   push:
     branches:
@@ -11,6 +12,11 @@ on:
     - '*.php'
     - 'phpunit.xml.dist'
     - 'composer.*'
+
+env:
+  WP_TESTS_DIR: /workspace/wordpress-test-lib
+  WP_CORE_DIR: /workspace/wordpress
+
 jobs:
   phpunit:
     name: PHP ${{ matrix.php-version }}
