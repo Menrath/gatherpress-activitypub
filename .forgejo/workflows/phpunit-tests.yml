@@ -52,6 +52,6 @@ jobs:
 
       - name: Running PHPUnit Tests
         run:
+          docker info
           npm run test:unit:php
-
         if: ${{ success() || failure() }}
