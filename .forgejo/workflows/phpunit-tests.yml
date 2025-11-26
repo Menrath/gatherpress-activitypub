@@ -26,9 +26,9 @@ jobs:
         image: mariadb
         env:
           MYSQL_ROOT_PASSWORD: root
-    strategy:
+strategy:
       matrix:
-        php-version: [ '8.4' ]
+        php-version: ['8.4']
         wordpress-version: ['6.8']
     steps:
       - name: Checkout
@@ -72,11 +72,10 @@ jobs:
         uses: https://github.com/shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: mysql, dom, iconv, json, libxml, zip
-          coverage: xdebug
+          extensions: dom, iconv, json, libxml, zip
+          coverage: none
           tools: composer, cs2pr
         env:
-          runner: self-hosted
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}
 
       - name: Install Composer dependencies for PHP
