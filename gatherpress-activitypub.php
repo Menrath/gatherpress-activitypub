@@ -49,7 +49,7 @@ add_filter( 'gatherpress_autoloader', 'gatherpress_activitypub_autoloader' );
  * @return void
  */
 function gatherpress_activitypub_setup(): void {
-	if ( defined( 'GATHERPRESS_VERSION' && class_exists( 'GatherPress_ActivityPub\Setup' ) ) ) {
+	if ( defined( 'GATHERPRESS_VERSION' ) && class_exists( 'GatherPress_ActivityPub\Setup' ) ) {
 		GatherPress_ActivityPub\Setup::get_instance();
 	}
 }

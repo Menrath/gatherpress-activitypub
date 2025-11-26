@@ -1,0 +1,51 @@
+name: PHPUnit Tests
+
+on:
+  push:
+    branches:
+      - github
+  pull_request:
+    paths:
+    - '.forgejo/workflows/phpunit-tests.yml'
+    - 'includes/**'
+    - 'test/unit/php**'
+    - '*.php'
+    - 'phpunit.xml.dist'
+    - 'composer.*'
+
+jobs:
+  test-php:
+    name: PHP ${{ matrix.php-version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.35.5
+        with:
+          php-version: latest
+          coverage: xdebug
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          # Enable built-in functionality for caching and restoring dependencies, which is disabled by default.
+          # The actions/setup-node uses actions/cache under the hood.
+          # https://github.com/actions/setup-node#caching-global-packages-data
+          cache: 'npm'
+
+      - name: Install NodeJS dependencies
+        if: steps.cache-node.outputs.cache-hit != 'true'
+        run: |
+          npm i -g @wordpress/env
+          npm install
+
+      - name: Running PHPUnit Tests
+        run: |
+          npm run test:unit:php
+        if: ${{ success() || failure() }}
