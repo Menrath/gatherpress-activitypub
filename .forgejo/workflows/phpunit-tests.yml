@@ -26,26 +26,6 @@ jobs:
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v6
 
-      - name: Setup PHP
-        uses: https://github.com/shivammathur/setup-php@2.35.5
-        with:
-          php-version: latest
-          coverage: xdebug
-
-      - name: Install Composer dependencies
-        uses: https://github.com/ramsey/composer-install@v3
-        env:
-          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
-          GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
-
-      - name: Install NodeJS
-        uses: https://code.forgejo.org/actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          # Enable built-in functionality for caching and restoring dependencies, which is disabled by default.
-          # The actions/setup-node uses actions/cache under the hood.
-          # https://github.com/actions/setup-node#caching-global-packages-data
-
       - name: Install NodeJS dependencies
         if: steps.cache-node.outputs.cache-hit != 'true'
         run: |
