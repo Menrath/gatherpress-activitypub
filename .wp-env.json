@@ -9,7 +9,7 @@
 	},
 	"mappings": {
 		"wp-content/plugins/gatherpress-activitypub": ".",
-		"wp-content/plugins/gatherpress-activitypub2": "/workplace/Event-Federation/gatherpress-activitypub",
-		"wp-content/plugins/gatherpress-activitypub3": "/data/workplace/Event-Federation/gatherpress-activitypub"
+		"wp-content/plugins/gatherpress-activitypub2": "/workspace/Event-Federation/gatherpress-activitypub",
+		"wp-content/plugins/gatherpress-activitypub3": "/data/workspace/Event-Federation/gatherpress-activitypub"
 	}
 }
