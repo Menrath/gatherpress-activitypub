@@ -11,8 +11,10 @@
 
 $gatherpress_activitypub_bootstrap_instance = PMC\Unit_Test\Bootstrap::get_instance();
 
+echo "----- Adding filter for loading plugins just in time -----\n";
+
 tests_add_filter(
-	'muplugins_loaded',
+	'plugins_loaded',
 	static function (): void {
 		echo "----- Manually activating plugins -----\n";
 		// Manually load needed plugins this plugins depends on, so that we can access their classes.
@@ -22,6 +24,8 @@ tests_add_filter(
 		require_once __DIR__ . '/../../../gatherpress-activitypub.php';
 	}
 );
+
+echo "----- Adding filter for autoloader for test classes -----\n";
 
 tests_add_filter(
 	'gatherpress_autoloader',
