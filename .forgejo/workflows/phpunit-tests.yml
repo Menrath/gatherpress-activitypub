@@ -20,7 +20,7 @@ env:
 jobs:
   phpunit:
     name: PHP ${{ matrix.php-version }}
-    runs-on: ubuntu-latest
+    runs-on: codeberg-medium
     services:
       mariadb:
         image: mariadb
