@@ -59,6 +59,11 @@ jobs:
 
       - name: Running PHPUnit Tests
         run: |
-          wp-env start
+          wp-env start --debug
           wp-env run cli ls -l
+          wp-env run cli ls -l ./wp-content/plugins
+          wp-env run cli echo $PWD
+          wp-env logs --debug
+          wp-env run cli ls -l ./wp-content/plugins/gatherpress-activitypub
+
         if: ${{ success() || failure() }}
