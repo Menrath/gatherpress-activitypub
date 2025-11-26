@@ -19,9 +19,9 @@ jobs:
     name: PHP ${{ matrix.php-version }}
     runs-on: docker
     steps:
-      - name: Install node
+      - name: Install packages
         run: |
-          apk add --update npm bash
+          apk add --update npm bash sudo
 
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v6
