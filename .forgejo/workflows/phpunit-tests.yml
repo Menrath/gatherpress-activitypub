@@ -57,19 +57,25 @@ jobs:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
-      - name: Detect Host Path for /workspace and adjust mappings for .wp-env.json
+      - name: Detect Host Path for /workspace
         run: |
+          # Get the container ID for the current job
           CONTAINER_ID=$(basename $(cat /proc/1/cpuset))
-          HOST_WORKSPACE_PATH=$(docker inspect $CONTAINER_ID | jq -r '.Mounts[] | select(.Destination=="/workspace") | .Source')
 
+          # Inspect the container and find the Source for /workspace
+          HOST_WORKSPACE_PATH=$(docker inspect $CONTAINER_ID | jq -r '.[] | .Mounts[] | select(.Destination == "/workspace") | .Source')
+
+          # Validate the resulting path
           if [[ -z "$HOST_WORKSPACE_PATH" ]]; then
-            echo "Error: Unable to detect host workspace path." >&2
+            echo "Error: Unable to detect the host path for /workspace mount." >&2
             exit 1
           fi
 
-          echo "Detected host workspace path: $HOST_WORKSPACE_PATH"
+          # Output the detected host directory for verification
+          echo "Detected host path for /workspace: $HOST_WORKSPACE_PATH"
 
-          PLUGIN_PATH="${HOST_WORKSPACE_PATH}/Event-Federation/gatherpress-activitypub"
+          # Load the host workspace path dynamically
+          PLUGIN_PATH="$HOST_WORKSPACE_PATH/Event-Federation/gatherpress-activitypub"
 
           # Path to .wp-env.json file
           WP_ENV_JSON="./.wp-env.json"
@@ -80,7 +86,7 @@ jobs:
             exit 1
           fi
 
-          # Update the .wp-env.json file on the fly using jq
+          # Update the file
           jq --arg pluginPath "$PLUGIN_PATH" '
             .mappings["wp-content/plugins/gatherpress-activitypub"] = {
               "type": "local",
@@ -88,9 +94,14 @@ jobs:
               "basename": "gatherpress-activitypub"
             }' "$WP_ENV_JSON" > "$WP_ENV_JSON.tmp" && mv "$WP_ENV_JSON.tmp" "$WP_ENV_JSON"
 
-          # Print the updated file for debugging
-          echo "Updated .wp-env.json:"
+          # Debug the updated .wp-env.json
+          echo "Updated .wp-env.json contents:"
           cat "$WP_ENV_JSON"
+
+      - name: Start wp-env
+        run: |
+          echo "Starting WordPress environment..."
+          npx wp-env start
 
       - name: Start WordPress Environment
         run: |
