@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - self_hosted_ci
   pull_request:
     paths:
     - '.forgejo/workflows/phpunit-tests.yml'
@@ -13,25 +14,40 @@ on:
     - 'phpunit.xml.dist'
     - 'composer.*'
 
+env:
+  WP_TESTS_DIR: ~/wordpress-test-lib
+  WP_CORE_DIR: ~/wordpress
+
 jobs:
-  test-php:
+  phpunit:
     name: PHP ${{ matrix.php-version }}
     runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb
+        env:
+          MYSQL_ROOT_PASSWORD: root
+    strategy:
+      matrix:
+        php-version: ['8.4']
+        wordpress-version: ['6.8']
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@2.35.5
+        uses: https://code.forgejo.org/actions/checkout@v6
         with:
-          php-version: latest
-          coverage: xdebug
+          submodules: true
 
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v3
+      - name: Cache WordPress Setup including the GatherPress and ActivityPub plugin.
+        id: cache-wordpress
+        uses: https://code.forgejo.org/actions/cache@v4
+        with:
+          path: |
+            ${{ env.WP_CORE_DIR }}
+            ${{ env.WP_TESTS_DIR }}
+          key: cache-phpunit-wordpress-${{ matrix.wordpress-version }}-1
 
       - name: Install NodeJS
-        uses: actions/setup-node@v4
+        uses: https://code.forgejo.org/actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           # Enable built-in functionality for caching and restoring dependencies, which is disabled by default.
@@ -39,13 +55,66 @@ jobs:
           # https://github.com/actions/setup-node#caching-global-packages-data
           cache: 'npm'
 
-      - name: Install NodeJS dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: |
-          npm i -g @wordpress/env
-          npm install
+      - name: Cache Composer
+        id: cache-composer
+        uses: https://code.forgejo.org/actions/cache@v4
+        with:
+          path: |
+            ./vendor/
+          key: cache-composer-1
 
-      - name: Running PHPUnit Tests
-        run: |
-          npm run test:unit:php
-        if: ${{ success() || failure() }}
+      - name: Setup cache environment for PHP Extensions
+        id: php-extensions-cache
+        uses: https://github.com/shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mysql, dom, iconv, json, libxml, zip
+          key: php-extensions-cache-1
+
+      - name: Cache PHP extensions
+        uses: https://code.forgejo.org/actions/cache@v4
+        with:
+          path: ${{ steps.php-extensions-cache.outputs.dir }}
+          key: ${{ steps.php-extensions-cache.outputs.key }}
+          restore-keys: ${{ steps.php-extensions-cache.outputs.key }}
+
+      - name: Setup PHP
+        uses: https://github.com/shivammathur/setup-php@2.35.5
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: dom, iconv, json, libxml, zip
+          coverage: none
+          tools: composer, cs2pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}
+
+      - name: Install Composer dependencies for PHPname: PHPUnit Tests
+
+on:
+        if: steps.cache-composer.outputs.cache-hit != 'true'
+        uses: https://github.com/ramsey/composer-install@v3
+        with:
+          composer_options: --optimize-autoloader --prefer-dist
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
+          GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
+
+      - name: Install and cache mysqladmin needed to initialize the test database
+        uses: https://github.com/awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: mysql-client
+          version: 1.0
+
+      - name: Setup Test Environment
+        if: steps.cache-wordpress.outputs.cache-hit != 'true'
+        run: bash bin/install-wp-tests.sh wordpress_test root root mariadb ${{ matrix.wordpress-version }} false false
+
+      - name: Initialize WordPress test database
+        if: steps.cache-wordpress.outputs.cache-hit != 'false'
+        run: bash bin/install-wp-tests.sh wordpress_test root root mariadb ${{ matrix.wordpress-version }} false true
+
+      - name: Unit Testing
+        run: ./vendor/bin/phpunit
+        env:
+          PHP_VERSION: ${{ matrix.php-versions }}
+          WP_ENVIRONMENT_TYPE: production
