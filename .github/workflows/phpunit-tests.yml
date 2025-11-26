@@ -3,6 +3,7 @@ name: PHPUnit Tests
 on:
   push:
     branches:
+      - main
       - github
   pull_request:
     paths:
@@ -47,5 +48,11 @@ jobs:
 
       - name: Running PHPUnit Tests
         run: |
+          echo $USER
+          echo $HOME
+          cat /proc/mounts
+          docker info
+          wp-env start --xdebug
+          wp-env run tests-wordpress cat /proc/mounts
           npm run test:unit:php
         if: ${{ success() || failure() }}
