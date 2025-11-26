@@ -72,6 +72,7 @@ jobs:
         uses: https://github.com/shivammathur/setup-php@v2
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}
+          runner: self-hosted
 
       - name: Install Composer dependencies for PHP
         if: steps.cache-composer.outputs.cache-hit != 'true'
