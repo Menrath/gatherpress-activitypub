@@ -11,8 +11,10 @@
 
 $gatherpress_activitypub_bootstrap_instance = PMC\Unit_Test\Bootstrap::get_instance();
 
+echo ABSPATH;
+
 tests_add_filter(
-	'plugins_loaded',
+	'muplugins_loaded',
 	static function () {
 		// Manually load needed plugins this plugins depends on, so that we can access their classes.
 		require_once ABSPATH . '/wp-content/plugins/gatherpress/gatherpress.php';
