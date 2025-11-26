@@ -110,15 +110,6 @@ jobs:
         if: steps.cache-wordpress.outputs.cache-hit != 'false'
         run: bash bin/install-wp-tests.sh wordpress_test root root mariadb ${{ matrix.wordpress-version }} false true
 
-      - name: Install Composer dependencies for GatherPress
-        uses: https://github.com/ramsey/composer-install@v3
-        env:
-          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
-          GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
-        with:
-          composer_options: --optimize-autoloader --prefer-dist
-          working-directory: ${{ env.WP_CORE_DIR }}/wp-content/plugins/gatherpress
-
       - name: Unit Testing
         run: ./vendor/bin/phpunit
         env:
