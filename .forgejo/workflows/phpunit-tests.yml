@@ -63,7 +63,7 @@ jobs:
           wp-env run cli ls -l
           wp-env run cli ls -l ./wp-content/plugins
           wp-env run cli echo $PWD
-          wp-env logs --debug
+          wp-env logs --watch false --debug true
           wp-env run cli ls -l ./wp-content/plugins/gatherpress-activitypub
 
         if: ${{ success() || failure() }}
