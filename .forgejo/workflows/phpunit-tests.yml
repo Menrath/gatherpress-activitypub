@@ -19,6 +19,12 @@ jobs:
     name: PHP ${{ matrix.php-version }}
     runs-on: docker
     steps:
+      - name: Install node
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+          \. "$HOME/.nvm/nvm.sh"
+          nvm install 22
+
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v6
 
