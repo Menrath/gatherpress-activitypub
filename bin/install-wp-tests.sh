@@ -138,8 +138,8 @@ install_gatherpress_plugin() {
 	git -C "$WP_CORE_DIR/wp-content/plugins/gatherpress" reset --hard
 
 	composer --working-dir "$WP_CORE_DIR/wp-content/plugins/gatherpress" install --optimize-autoloader --prefer-dist
-	npm --prefix "$WP_CORE_DIR/wp-content/plugins/gatherpress" install
-    npm --prefix "$WP_CORE_DIR/wp-content/plugins/gatherpress" run build
+	npm install --prefix "$WP_CORE_DIR/wp-content/plugins/gatherpress"
+    npm run --prefix "$WP_CORE_DIR/wp-content/plugins/gatherpress" build
 }
 
 install_test_suite() {
