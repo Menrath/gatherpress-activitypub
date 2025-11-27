@@ -140,8 +140,12 @@ install_gatherpress_plugin() {
 
 	composer --working-dir "$PLUGIN_DIR" install --optimize-autoloader --prefer-dist
 
-	npm install --prefix "$PLUGIN_DIR"
-	npm run --prefix "$PLUGIN_DIR" build
+	CURRENT_DIR_OF_WORKING="$(pwd)"
+	cd "$PLUGIN_DIR"
+	ls
+	npm install
+	npm run build
+	cd "$CURRENT_DIR_OF_WORKING"
 }
 
 install_test_suite() {
