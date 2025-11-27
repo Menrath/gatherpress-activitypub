@@ -15,8 +15,8 @@ on:
     - 'composer.*'
 
 env:
-  WP_TESTS_DIR: ~/wordpress-test-lib
-  WP_CORE_DIR: ~/wordpress
+  WP_TESTS_DIR: /wordpress-test-lib
+  WP_CORE_DIR: /wordpress
 
 jobs:
   phpunit:
