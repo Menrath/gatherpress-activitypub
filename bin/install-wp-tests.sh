@@ -139,7 +139,7 @@ install_gatherpress_plugin() {
 
 	composer --working-dir "$WP_CORE_DIR/wp-content/plugins/gatherpress" install --optimize-autoloader --prefer-dist
 	npm --prefix "$WP_CORE_DIR/wp-content/plugins/gatherpress" install
-	npm --prefix "$WP_CORE_DIR/wp-content/plugins/gatherpress" run build
+    npm --prefix "$WP_CORE_DIR/wp-content/plugins/gatherpress" run build
 }
 
 install_test_suite() {
