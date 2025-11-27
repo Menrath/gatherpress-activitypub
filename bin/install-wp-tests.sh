@@ -124,22 +124,24 @@ install_gatherpress_plugin() {
 	mkdir -p "$WP_CORE_DIR/wp-content/plugins/"
 
 	GATHERPRESS_PLUGIN_VERSION="develop"
-
-	if [ -d "$WP_CORE_DIR/wp-content/plugins/gatherpress" ]; then
-	    git -C "$WP_CORE_DIR/wp-content/plugins/gatherpress" fetch --tags
-	    git -C "$WP_CORE_DIR/wp-content/plugins/gatherpress" checkout $GATHERPRESS_PLUGIN_VERSION
-		return;
-	fi
-
+	PLUGIN_DIR="$WP_CORE_DIR/wp-content/plugins/gatherpress"
 	URL="https://github.com/GatherPress/gatherpress"
 
-	git clone $URL "$WP_CORE_DIR/wp-content/plugins/gatherpress"
-	git -C "$WP_CORE_DIR/wp-content/plugins/gatherpress" checkout $GATHERPRESS_PLUGIN_VERSION
-	git -C "$WP_CORE_DIR/wp-content/plugins/gatherpress" reset --hard
+	if [ -d "$PLUGIN_DIR" ]; then
+		git -C "$PLUGIN_DIR" fetch --tags
+		git -C "$PLUGIN_DIR" checkout "$GATHERPRESS_PLUGIN_VERSION"
+	else
+		git clone --recurse-submodules "$URL" "$PLUGIN_DIR"
+		git -C "$PLUGIN_DIR" checkout "$GATHERPRESS_PLUGIN_VERSION"
+		git -C "$PLUGIN_DIR" submodule update --init --recursive
+	fi
 
-	composer --working-dir "$WP_CORE_DIR/wp-content/plugins/gatherpress" install --optimize-autoloader --prefer-dist
-	npm install --prefix "$WP_CORE_DIR/wp-content/plugins/gatherpress"
-    npm run --prefix "$WP_CORE_DIR/wp-content/plugins/gatherpress" build
+	git -C "$PLUGIN_DIR" reset --hard
+
+	composer --working-dir "$PLUGIN_DIR" install --optimize-autoloader --prefer-dist
+
+	npm install --prefix "$PLUGIN_DIR"
+	npm run --prefix "$PLUGIN_DIR" build
 }
 
 install_test_suite() {
