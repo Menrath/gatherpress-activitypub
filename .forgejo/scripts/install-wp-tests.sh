@@ -17,6 +17,8 @@ TMPDIR=${TMPDIR-/tmp}
 TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
 WP_TESTS_DIR=${WP_TESTS_DIR-$TMPDIR/wordpress-tests-lib}
 WP_CORE_DIR=${WP_CORE_DIR-$TMPDIR/wordpress/}
+ACTIVITYPUB_VERSION=${ACTIVITYPUB_VERSION-trunk}
+GATHERPRESS_VERSION=${GATHERPRESS_VERSION-develop}
 
 download() {
     if [ `which curl` ]; then
@@ -101,38 +103,45 @@ install_wp() {
 }
 
 install_activitypub_plugin() {
+	if [ "$SKIP_WP_INSTALL" = "true" ]; then
+        echo "Skipping ActivityPub installation."
+        return 0
+    fi
+
 	# We also need it's test classes, therefore we use the git repository.
 	mkdir -p "$WP_CORE_DIR/wp-content/plugins/"
 
-	ACTIVITYPUB_PLUGIN_VERSION="trunk"
-
 	if [ -d "$WP_CORE_DIR/wp-content/plugins/activitypub" ]; then
 	    git -C "$WP_CORE_DIR/wp-content/plugins/activitypub" fetch --tags
-	    git -C "$WP_CORE_DIR/wp-content/plugins/activitypub" checkout $ACTIVITYPUB_PLUGIN_VERSION
+	    git -C "$WP_CORE_DIR/wp-content/plugins/activitypub" checkout $ACTIVITYPUB_VERSION
 		return;
 	fi
 
     URL="https://github.com/Automattic/wordpress-activitypub"
 
 	git clone $URL "$WP_CORE_DIR/wp-content/plugins/activitypub"
-	git -C "$WP_CORE_DIR/wp-content/plugins/activitypub" checkout $ACTIVITYPUB_PLUGIN_VERSION
+	git -C "$WP_CORE_DIR/wp-content/plugins/activitypub" checkout $ACTIVITYPUB_VERSION
 	git -C "$WP_CORE_DIR/wp-content/plugins/activitypub" reset --hard
 }
 
 install_gatherpress_plugin() {
+	if [ "$SKIP_WP_INSTALL" = "true" ]; then
+        echo "Skipping GatherPress installation."
+        return 0
+    fi
+
 	# We also need it's test classes, therefore we use the git repository.
 	mkdir -p "$WP_CORE_DIR/wp-content/plugins/"
 
-	GATHERPRESS_PLUGIN_VERSION="develop"
 	PLUGIN_DIR="$WP_CORE_DIR/wp-content/plugins/gatherpress"
 	URL="https://github.com/GatherPress/gatherpress"
 
 	if [ -d "$PLUGIN_DIR" ]; then
 		git -C "$PLUGIN_DIR" fetch --tags
-		git -C "$PLUGIN_DIR" checkout "$GATHERPRESS_PLUGIN_VERSION"
+		git -C "$PLUGIN_DIR" checkout "$GATHERPRESS_VERSION"
 	else
 		git clone --recurse-submodules "$URL" "$PLUGIN_DIR"
-		git -C "$PLUGIN_DIR" checkout "$GATHERPRESS_PLUGIN_VERSION"
+		git -C "$PLUGIN_DIR" checkout "$GATHERPRESS_VERSION"
 		git -C "$PLUGIN_DIR" submodule update --init --recursive
 	fi
 

@@ -17,9 +17,9 @@
 		"url": "https://codeberg.org/Event-Federation/gatherpress-activitypub/issues"
 	},
 	"devDependencies": {
+		"@wordpress/env": "^10.35.0",
 		"@wordpress/i18n": "^5.4.0",
-		"@wordpress/scripts": "^28.4.0",
-		"@wordpress/env": "^10.35.0"
+		"@wordpress/scripts": "^28.4.0"
 	},
 	"scripts": {
 		"build": "wp-scripts build",
@@ -35,13 +35,17 @@
 		"lint:js:fix": "wp-scripts lint-js --fix",
 		"lint:md:docs": "wp-scripts lint-md-docs",
 		"lint:md:js": "wp-scripts lint-md-js",
+		"lint:php": "vendor/bin/phpcs --standard=phpcs.ruleset.xml --extensions=php --colors -s -p -v .",
+		"lint:php:fix": "vendor/bin/phpcbf --standard=phpcs.ruleset.xml -p -v .",
+		"lint:phpstan": "vendor/bin/phpstan analyze -vv --memory-limit=2G",
 		"lint:pkg-json": "wp-scripts lint-pkg-json",
 		"packages-update": "wp-scripts packages-update",
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start",
 		"pretest:unit:php": "wp-env start --xdebug",
-		"test:unit:php": "wp-env run tests-wordpress php /var/www/html/wp-content/plugins/gatherpress-activitypub/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/gatherpress-activitypub/phpunit.xml.dist",
-		"test:unit:php": "wp-env run tests-wordpress php /var/www/html/wp-content/plugins/gatherpress-activitypub/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/gatherpress-activitypub/phpunit.xml.dist",
+		"pretest:unit:php-debug": "wp-env start --xdebug",
+		"test:unit:php": "wp-env run tests-wordpress php -dxdebug.mode=coverage /var/www/html/wp-content/plugins/gatherpress-activitypub/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/gatherpress-activitypub/phpunit.xml.dist --coverage-clover=coverage.xml --coverage-html=build/coverage-report",
+		"test:unit:php-debug": "wp-env run tests-wordpress php /var/www/html/wp-content/plugins/gatherpress-activitypub/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/gatherpress-activitypub/phpunit.xml.dist",
 		"wp-env": "wp-env"
 	}
 }

@@ -7,7 +7,7 @@
  * @license AGPL-3.0-or-later
  */
 
-namespace GatherPress_ActivityPub\ActivityPub\Object;
+namespace GatherPress_ActivityPub\ActivityPub;
 
 use Activitypub\Activity\Base_Object;
 
@@ -24,11 +24,10 @@ use Activitypub\Activity\Base_Object;
  * @method string|null get_event_status()                    Gets the event's status.
  * @method string|null get_timezone()                        Gets the timezone of the event.
  *
- * @method Event set_actor( string $actor )                      Sets which actor created the event.
- * @method Event set_maximum_attendee_capacity( int $capacity )  Sets how many places there can be for an event.
- * @method Event set_name( string $name )                        Sets the title of the event.
- * @method Event set_event_status( string $status )              Sets the event's status.
- * @method Event set_timezone( string $timezone )                Sets the timezone of the event.
+ * @method Event_FEP_8a8e set_maximum_attendee_capacity( int $capacity )  Sets how many places there can be for an event.
+ * @method Event_FEP_8a8e set_name( string $name )                        Sets the title of the event.
+ * @method Event_FEP_8a8e set_event_status( string $status )              Sets the event's status.
+ * @method Event_FEP_8a8e set_timezone( string $timezone )                Sets the timezone of the event.
  */
 class Event_FEP_8a8e extends Base_Object {
 	/**
@@ -38,7 +37,7 @@ class Event_FEP_8a8e extends Base_Object {
 	 */
 	const JSON_LD_CONTEXT = array(
 		'https://schema.org/',                   // The base context is schema.org, because it is used a lot.
-        'https://w3id.org/fep/8a8e',             // FEP-8a8e context.
+		'https://w3id.org/fep/8a8e',             // FEP-8a8e context.
 		'https://www.w3.org/ns/activitystreams', // The ActivityStreams context overrides everything also defined in schema.org.
 	);
 

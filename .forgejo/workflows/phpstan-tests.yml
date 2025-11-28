@@ -1,4 +1,4 @@
-name: PHPUnit Tests
+name: PHPStan Tests
 
 on:
   push:
@@ -7,39 +7,32 @@ on:
       - improve_ci
   pull_request:
     paths:
-    - '.forgejo/workflows/phpunit-tests.yml'
+    - '.forgejo/workflows/phpstan-tests.yml'
     - 'includes/**'
-    - 'test/unit/php**'
-    - '*.php'
-    - 'phpunit.xml.dist'
+    - 'phpstan.neon.dist'
     - 'composer.*'
 
 env:
-  WP_TESTS_DIR: /wordpress-test-lib
-  WP_CORE_DIR: /wordpress
+  WP_TESTS_DIR: /workspace/wordpress-test-lib
+  WP_CORE_DIR: /workspace/wordpress
 
 jobs:
-  phpunit:
-    name: PHPUnit – PHP ${{ matrix.php-version }}
+  phpstan:
     runs-on: codeberg-medium
-    services:
-      mariadb:
-        image: mariadb
-        env:
-          MYSQL_ROOT_PASSWORD: root
     strategy:
       matrix:
         php-version: ['8.4']
         wordpress-version: ['6.8']
         gatherpress-version: ['develop']
         activitypub-version: ['trunk']
+    name: PHPStan – PHP ${{ matrix.php-version }}
     env:
       extensions: mysql, dom, iconv, json, libxml, zip
       GATHERPRESS_VERSION: ${{ matrix.gatherpress-version }}
       ACTIVITYPUB_VERSION: ${{ matrix.activitypub-version }}
     steps:
       - name: Checkout
-        uses: https://code.forgejo.org/actions/checkout@v6
+        uses: https://code.forgejo.org/actions/checkout@v4
 
       - name: Cache WordPress Setup including the GatherPress and ActivityPub plugin
         id: cache-wordpress
@@ -85,31 +78,19 @@ jobs:
       - name: Install Composer dependencies for PHP
         if: steps.cache-composer.outputs.cache-hit != 'true'
         uses: https://github.com/ramsey/composer-install@v3
-        with:
-          composer_options: --optimize-autoloader --prefer-dist
         env:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
-      - name: Install and cache mysqladmin needed to initialize the test database
-        uses: https://github.com/awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: mysql-client
-          version: mysql-client-1
-
-      - name: Setup WordPress + GatherPress/ActivityPub files and init WordPress test database
+      - name: Setup WordPress + GatherPress/ActivityPub files
         if: steps.cache-wordpress.outputs.cache-hit != 'true'
-        run: bash .forgejo/scripts/install-wp-tests.sh wordpress_test root root mariadb ${{ matrix.wordpress-version }} false false
+        run: bash .forgejo/scripts/install-wp-tests.sh wordpress_test root root mariadb ${{ matrix.wordpress-version }} true false
         env:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
           GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
 
-      - name: Initialize WordPress test database
-        if: steps.cache-wordpress.outputs.cache-hit == 'true'
-        run: bash .forgejo/scripts/install-wp-tests.sh wordpress_test root root mariadb ${{ matrix.wordpress-version }} false true
-
-      - name: PHPUnit
-        run: ./vendor/bin/phpunit
-        env:
-          PHP_VERSION: ${{ matrix.php-versions }}
-          WP_ENVIRONMENT_TYPE: production
+      - name: Running PHPStan Analyze
+        if: ${{ success() || failure() }}
+        run: |
+          ./vendor/bin/phpstan --version
+          ./vendor/bin/phpstan  analyze -vv --memory-limit=2G --error-format=checkstyle | cs2pr

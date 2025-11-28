@@ -1,0 +1,12 @@
+<?php
+/**
+ * Constants, functions, phpstan ABSPATHetc. used by GatherPress
+ * should be understood by PHPStan.
+ */
+
+namespace {
+
+    define( 'GATHERPRESS_ACTIVITYPUB_PATH', './' );
+    define( 'GATHERPRESS_ACTIVITYPUB_FILE', './gatherpress-activitypub.php' );
+    define( 'GATHERPRESS_ACTIVITYPUB_VERSION', '' );
+}

@@ -31,7 +31,7 @@ class Test_Setup extends Base {
 		$instance = Setup::get_instance();
 		$hooks    = array(
 			array(
-				'type'     => 'action',
+				'type'     => 'filter',
 				'name'     => 'gatherpress_sub_pages',
 				'priority' => 10,
 				'callback' => array( $instance, 'setup_sub_page' ),
@@ -41,6 +41,12 @@ class Test_Setup extends Base {
 				'name'     => 'activitypub_transformer',
 				'priority' => 10,
 				'callback' => array( $instance, 'register_activitypub_transformer' ),
+			),
+			array(
+				'type'     => 'filter',
+				'name'     => sprintf( 'plugin_action_links_%s/%s', basename( GATHERPRESS_ACTIVITYPUB_PATH ), basename( GATHERPRESS_ACTIVITYPUB_FILE ) ),
+				'priority' => 10,
+				'callback' => array( $instance, 'filter_plugin_action_links' ),
 			),
 		);
 

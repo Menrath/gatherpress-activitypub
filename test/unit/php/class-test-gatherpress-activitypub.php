@@ -23,7 +23,7 @@ class Test_GatherPress_ActivityPub extends Base {
 	public function test_plugin_version(): void {
 		$package_json = json_decode(
 			file_get_contents( // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-				sprintf( '%s/package.json', GATHERPRESS_ACTIVITYPUB_CORE_PATH )
+				sprintf( '%s/package.json', GATHERPRESS_ACTIVITYPUB_PATH )
 			),
 			true
 		);

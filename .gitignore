@@ -59,5 +59,6 @@ test-report.xml
 *.zip
 
 # Dev tools
-.vscode/launch.json
+.vscode
 .wp-env.override.json
+phpstan.neon

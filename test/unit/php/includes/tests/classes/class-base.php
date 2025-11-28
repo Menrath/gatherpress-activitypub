@@ -188,7 +188,7 @@ abstract class Base extends PMC_Base {
 	 */
 	public function set_fn_return( string $function_name, callable $callback ): void {
 		// Store the mock callback in a global variable for the namespaced function to use.
-		$GLOBALS[ 'gatherpress_test_' . $function_name . '_mock' ] = $callback;
+		$GLOBALS[ 'gatherpress_activitypub_test_' . $function_name . '_mock' ] = $callback;
 	}
 
 	/**
@@ -201,6 +201,6 @@ abstract class Base extends PMC_Base {
 	 * @return void
 	 */
 	public function unset_fn_return( string $function_name ): void {
-		unset( $GLOBALS[ 'gatherpress_test_' . $function_name . '_mock' ] );
+		unset( $GLOBALS[ 'gatherpress__activitypub_test_' . $function_name . '_mock' ] );
 	}
 }

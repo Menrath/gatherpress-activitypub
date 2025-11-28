@@ -1,0 +1,71 @@
+name: PHP Code Checker
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+    - '.forgejo/workflows/coding-standards.yml'
+    - 'includes/**'
+    - 'test/**'
+    - 'composer.json'
+    - '*.php'
+
+jobs:
+  phpcs:
+    name: PHP Code Checker
+    runs-on: codeberg-medium
+    strategy:
+      matrix:
+        php-version: ['8.4']
+        wordpress-version: ['6.8']
+    env:
+      extensions: mysql, dom, iconv, json, libxml, zip
+    steps:
+      - name: Checkout
+        uses: https://code.forgejo.org/actions/checkout@v4
+
+      - name: Cache Composer
+        id: cache-composer
+        uses: https://code.forgejo.org/actions/cache@v4
+        with:
+          path: ./vendor/
+          key: ${{ runner.os }}-${{ hashFiles('composer.lock') }}
+
+      - name: Setup cache environment for PHP Extensions
+        id: php-extensions-cache
+        uses: https://github.com/shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.extensions }}
+          key: php-extensions-cache-1
+
+      - name: Cache PHP extensions
+        uses: https://code.forgejo.org/actions/cache@v4
+        with:
+          path: ${{ steps.php-extensions-cache.outputs.dir }}
+          key: ${{ steps.php-extensions-cache.outputs.key }}
+          restore-keys: ${{ steps.php-extensions-cache.outputs.key }}
+
+      - name: Setup PHP
+        uses: https://github.com/shivammathur/setup-php@2.35.5
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.extensions }}
+          coverage: none
+          tools: composer, cs2pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}
+
+      - name: Install Composer dependencies for PHP
+        if: steps.cache-composer.outputs.cache-hit != 'true'
+        uses: https://github.com/ramsey/composer-install@v3
+        with:
+          composer_options: --optimize-autoloader --prefer-dist
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ACCESS_TOKEN_FOR_GITHUB }}"}}'
+          GITHUB_TOKEN: ${{ env.ACCESS_TOKEN_FOR_GITHUB }}
+
+      - name: Run PHP Code Sniffer
+        run: ./vendor/bin/phpcs --standard=phpcs.ruleset.xml --extensions=php --colors -s -p -v .

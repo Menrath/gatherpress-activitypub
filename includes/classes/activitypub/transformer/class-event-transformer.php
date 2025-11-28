@@ -12,11 +12,11 @@ namespace GatherPress_ActivityPub\ActivityPub\Transformer;
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit; // @codeCoverageIgnore
 
-use Activitypub\Activity\Extended_Object\Event as Event_Object;
+use Activitypub\Activity\Base_Object;
 use Activitypub\Activity\Extended_Object\Place;
 use Activitypub\Transformer\Post;
 use GatherPress\Core\Event;
-use GatherPress_ActivityPub\ActivityPub\Object\Event_FEP_8a8e;
+use GatherPress_ActivityPub\ActivityPub\Event_FEP_8a8e;
 use WP_Error;
 
 use function Activitypub\get_content_warning;
@@ -145,9 +145,9 @@ class Event_Transformer extends Post {
 	/**
 	 * Transform to an the Event object.
 	 *
-	 * @return Event_Object|WP_Error
+	 * @return Base_Object|WP_Error
 	 */
-	public function to_object(): Event_Object|WP_Error {
+	public function to_object(): Base_Object|WP_Error {
 		// Apply the filter for preventing the rendering off gatherpress blocks just in time.
 		add_filter( 'render_block', array( self::class, 'filter_gatherpress_blocks' ), 10, 2 );
 

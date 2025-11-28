@@ -43,8 +43,16 @@ class Setup {
 	 * @return void
 	 */
 	protected function setup_hooks(): void {
-		add_action( 'gatherpress_sub_pages', array( $this, 'setup_sub_page' ) );
+		add_filter( 'gatherpress_sub_pages', array( $this, 'setup_sub_page' ) );
 		add_filter( 'activitypub_transformer', array( $this, 'register_activitypub_transformer' ), 10, 3 );
+		add_filter(
+			sprintf(
+				'plugin_action_links_%s/%s',
+				basename( GATHERPRESS_ACTIVITYPUB_PATH ),
+				basename( GATHERPRESS_ACTIVITYPUB_FILE )
+			),
+			array( $this, 'filter_plugin_action_links' )
+		);
 	}
 
 	/**
@@ -88,5 +96,25 @@ class Setup {
 
 		// Return the default transformer.
 		return $transformer;
+	}
+
+	/**
+	 * Add custom links to the plugin action links in the WordPress plugins list.
+	 *
+	 * This method adds a 'Settings' link to the plugin's action links in the WordPress plugins list.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $actions An array of existing action links.
+	 * @return array An updated array of action links, including the 'Settings' link.
+	 */
+	public function filter_plugin_action_links( array $actions ): array {
+		return array_merge(
+			array(
+				'settings' => '<a href="' . esc_url( admin_url( 'edit.php?post_type=gatherpress_event&page=gatherpress_activitypub' ) ) . '">'
+					. esc_html__( 'Settings', 'gatherpress-activitypub' ) . '</a>',
+			),
+			$actions
+		);
 	}
 }
